@@ -1,0 +1,23 @@
+#!/bin/bash
+
+#PBS -N curation_pretext
+#PBS -l select=1:ncpus=2:mem=8gb
+#PBS -l walltime=08:00:00
+#PBS -j oe
+#PBS -V
+
+cd $PBS_O_WORKDIR
+module load apptainer
+
+nextflow run sanger-tol/curationpretext \
+  --input /home/proj_202504p2_BD-MED/abner/durio/assembly/DurOxl/DurOxl.hifiasm.20260204/scaffolding_hap1/yahs/asm_hap1_scaffolds_final.fa.gz \
+  --cram /home/proj_202504p2_BD-MED/abner/durio/raw_data/DurOxl  \
+  --reads /home/proj_202504p2_BD-MED/abner/durio/raw_data/DurOxl \
+  --multi_mapping 10 \
+  --read_type hifi \
+  --run_hires false \
+  --sample DurOxl \
+  --teloseq TTTAGGG \
+  --outdir curation \
+  -profile singularity \
+  -resume

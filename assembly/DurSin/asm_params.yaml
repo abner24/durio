@@ -1,0 +1,52 @@
+# Sample configuration for the genome assembly workflow.
+
+pacbio: "/home/proj_202504p2_BD-MED/abner/durio/pacbio/D_Sin_PB.hifi_reads.bam"
+hicF: "/home/proj_202504p2_BD-MED/abner/durio/hi-c/Dsin_Omc_DKDL240000288-1A_H73VGDSXC_L1_1.fq.gz"
+hicR: "/home/proj_202504p2_BD-MED/abner/durio/hi-c/Dsin_Omc_DKDL240000288-1A_H73VGDSXC_L1_2.fq.gz"
+
+oatk_plastid: "/home/proj_202504p2_BD-MED/abner/tools/OatkDB-1.0/v20230921/embryophyta_pltd.fam"
+oatk_mito: "/home/proj_202504p2_BD-MED/abner/tools/OatkDB-1.0/v20230921/embryophyta_mito.fam"
+
+adapterfilt_install_dir: null
+
+FastK_k: 31
+GS_ploidy_range: [1, 2]
+hifiasm_extra: "--primary"
+
+busco_lineage: "embryophyta_odb10"  # BUSCO lineage name or path; leave empty to skip BUSCO
+busco_mode: "genome"                # busco mode: genome | transcriptome | proteins
+
+tidk_repeat: "TTTAGGG"             # telomere repeat unit (TTTAGGG for most plants)
+
+juicer_tools: "/home/proj_202504p2_BD-MED/abner/GenomeAssembly/juicer_tools/juicer_tools_1.22.01.jar"
+hic_qc_script: "/home/proj_202504p2_BD-MED/abner/GenomeAssembly/scripts/dovetail_get_qc.py"
+
+process_low:
+  queue: workq
+  time: "24:00:00"
+  threads: 2
+  memory: "8gb"
+
+process_default:
+  queue: workq
+  time: "48:00:00"
+  threads: 8
+  memory: "32gb"
+
+process_medium:
+  queue: workq
+  time: "48:00:00"
+  threads: 18
+  memory: "72gb"
+
+process_high:
+  queue: workq
+  time: "48:00:00"
+  threads: 24
+  memory: "96gb"
+
+process_highmem:
+  queue: workq
+  time: "48:00:00"
+  threads: 32
+  memory: "128gb"

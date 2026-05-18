@@ -1,0 +1,15 @@
+#!/bin/bash
+
+#PBS -N nextflow_pbtk
+#PBS -l select=1:ncpus=4:mem=16gb
+#PBS -l walltime=12:00:00
+#PBS -j oe
+#PBS -o pbtk_fastq.log
+#PBS -V
+
+cd $PBS_O_WORKDIR
+
+module load apptainer
+
+nextflow run /home/proj_202504p2_BD-MED/abner/pipelines/bam2fq \
+    --input samplesheet_bam.csv 

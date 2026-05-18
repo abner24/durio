@@ -1,0 +1,20 @@
+metadata:
+  id: DurDatoAli # str: unique identifier for the sample
+  species: Durio zibethinus cv. Dato Ali # str: binomial name of species being assembled
+  mitochondrial_code: 1 # int: mitochondrial genetic code (https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/wprintgc.cgi)
+sequencing_data:
+  long_reads: # mandatory - information about location and platform of long reads
+    platform: "pacbio" # str: "PacBio" or "ONT"
+    reads: # List of str: Paths to long-read read files in FASTA or FASTQ format
+      - /home/proj_202504p2_BD-MED/abner/durio/raw_data/PBTK_BAM2FASTQ/D_Dat_Ak.fastq.gz
+  hic: # (optional): if not specified, no scaffolding will be run.
+    reads: # List of str: Paths to Hi-C read files in CRAM format
+      - /home/proj_202504p2_BD-MED/abner/durio/raw_data/cram/DurDatoA.cram
+    hic_motif: # List of str: Cutting motifs of enzymes used in Hi-C library preparation
+      - GATC
+databases:
+  busco:
+    lineage: viridiplantae_odb12 # str: BUSCO lineage name to use for QC
+  oatk:
+    mito_hmm: /home/proj_202504p2_BD-MED/abner/tools/OatkDB-1.0/v20230921/embryophyta_mito.fam 
+    plastid_hmm: /home/proj_202504p2_BD-MED/abner/tools/OatkDB-1.0/v20230921/embryophyta_pltd.fam 

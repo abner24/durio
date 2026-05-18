@@ -1,0 +1,115 @@
+#!/bin/bash
+#PBS -N rerun_purge_dups
+#PBS -l select=1:ncpus=4:mem=32gb
+#PBS -l walltime=12:00:00
+#PBS -j oe
+#PBS -V
+#
+# Rerun purge_dups + get_seqs using the cutoffs already in results/purge_dups/cutoffs
+# (edit that file before submitting if you are changing thresholds).
+#
+# Usage (pick one):
+#   cd /path/to/assembly/<SpeciesDir> && qsub /path/to/rerun_purge_dups.pbs
+#   qsub -v ASSEMBLY_ROOT=/path/to/assembly/<SpeciesDir> /path/to/rerun_purge_dups.pbs
+#
+# Example: one job per species (same layout as durio/assembly/<Name>/)
+#   SCRIPT=/home/proj_202504p2_BD-MED/abner/durio/assembly/scripts/rerun_purge_dups.pbs
+#   BASE=/home/proj_202504p2_BD-MED/abner/durio/assembly
+#   for sp in DurBru DurGra_Og; do qsub -N "purge_${sp}" -v "ASSEMBLY_ROOT=${BASE}/${sp}" "$SCRIPT"; done
+#
+# Optional environment variables:
+#   ASSEMBLY_ROOT   — species assembly root (directory that contains results/). Default: $PBS_O_WORKDIR
+#   PURGE_SUBDIR    — under ASSEMBLY_ROOT, default: results/purge_dups
+#   CUTOFFS_FILE    — default: ${ASSEMBLY_ROOT}/${PURGE_SUBDIR}/cutoffs
+#   PURGE_DUPS_EXTRA — extra args to purge_dups (default: -2, matches GenomeAssembly workflow)
+#   CONDA_INIT      — if set, file to source before conda activate (e.g. $HOME/miniconda3/etc/profile.d/conda.sh)
+#   CONDA_ENV       — conda env name that provides purge_dups, get_seqs (e.g. snakemake purge_dups env)
+#   NO_BACKUP       — if set to 1, do not copy previous bed/hap/purged into backup_rerun_* under purge dir
+#   SKIP_HIST       — if set to 1, skip optional histogram (requires hist_plot.py on PATH)
+#
+# If hist_plot.py is missing, add GenomeAssembly/scripts to PATH or set SKIP_HIST=1 (Snakefile used a separate qc_hic env for plotting).
+#
+# Mirrors: GenomeAssembly/workflow/purge_dups.smk rules purge_dups_run + purge_dups_get_seqs (+ optional plot_hist)
+
+set -euo pipefail
+
+log() { echo "[$(date -Is)] $*"; }
+
+ASSEMBLY_ROOT="${ASSEMBLY_ROOT:-${PBS_O_WORKDIR:?Set PBS_O_WORKDIR or ASSEMBLY_ROOT}}"
+PURGE_SUBDIR="${PURGE_SUBDIR:-results/purge_dups}"
+PURGE_DIR="${ASSEMBLY_ROOT}/${PURGE_SUBDIR}"
+CUTOFFS_FILE="${CUTOFFS_FILE:-${PURGE_DIR}/cutoffs}"
+PURGE_DUPS_EXTRA="${PURGE_DUPS_EXTRA:--2}"
+
+cd "${ASSEMBLY_ROOT}"
+
+if [[ -n "${CONDA_INIT:-}" && -n "${CONDA_ENV:-}" ]]; then
+  # shellcheck source=/dev/null
+  source "${CONDA_INIT}"
+  conda activate "${CONDA_ENV}"
+fi
+
+command -v purge_dups >/dev/null 2>&1 || { log "ERROR: purge_dups not on PATH (set CONDA_INIT + CONDA_ENV or load modules)."; exit 1; }
+command -v get_seqs >/dev/null 2>&1 || { log "ERROR: get_seqs not on PATH."; exit 1; }
+
+if [[ -f "${ASSEMBLY_ROOT}/results/assembly/asm.bp.hic.p_ctg.fa" ]]; then
+  PRIMARY_FA="${ASSEMBLY_ROOT}/results/assembly/asm.bp.hic.p_ctg.fa"
+elif [[ -f "${ASSEMBLY_ROOT}/results/assembly/asm.bp.p_ctg.fa" ]]; then
+  PRIMARY_FA="${ASSEMBLY_ROOT}/results/assembly/asm.bp.p_ctg.fa"
+else
+  log "ERROR: no primary assembly FASTA found (asm.bp.hic.p_ctg.fa or asm.bp.p_ctg.fa under results/assembly/)."
+  exit 1
+fi
+
+for need in "${CUTOFFS_FILE}" "${PURGE_DIR}/pbcstat.cov" "${PURGE_DIR}/assembly.self.paf" "${PRIMARY_FA}"; do
+  [[ -f "${need}" ]] || { log "ERROR: missing required file: ${need}"; exit 1; }
+done
+
+if [[ ! -s "${CUTOFFS_FILE}" ]]; then
+  log "ERROR: cutoffs file is empty: ${CUTOFFS_FILE}"
+  exit 1
+fi
+
+log "ASSEMBLY_ROOT=${ASSEMBLY_ROOT}"
+log "PRIMARY_FA=${PRIMARY_FA}"
+log "Using cutoffs file ${CUTOFFS_FILE}: $(tr '\n' ' ' < "${CUTOFFS_FILE}")"
+
+mkdir -p "${PURGE_DIR}" "${ASSEMBLY_ROOT}/logs/purge_dups"
+
+if [[ "${NO_BACKUP:-0}" != "1" ]]; then
+  stamp="$(date +%Y%m%d_%H%M%S)"
+  bak="${PURGE_DIR}/backup_rerun_${stamp}"
+  mkdir -p "${bak}"
+  for f in purge_dups.bed assembly.hap.fasta assembly.purged.fasta; do
+    if [[ -f "${PURGE_DIR}/${f}" ]]; then
+      cp -a "${PURGE_DIR}/${f}" "${bak}/"
+      log "Backed up ${f} -> ${bak}/"
+    fi
+  done
+fi
+
+log "Running purge_dups ${PURGE_DUPS_EXTRA} -T ... -c ... assembly.self.paf"
+purge_dups ${PURGE_DUPS_EXTRA} \
+  -T "${CUTOFFS_FILE}" \
+  -c "${PURGE_DIR}/pbcstat.cov" \
+  "${PURGE_DIR}/assembly.self.paf" \
+  > "${PURGE_DIR}/purge_dups.bed" \
+  2> "${ASSEMBLY_ROOT}/logs/purge_dups/purge_dups_rerun.log"
+
+log "Running get_seqs"
+get_seqs -e "${PURGE_DIR}/purge_dups.bed" "${PRIMARY_FA}" \
+  2> "${ASSEMBLY_ROOT}/logs/purge_dups/get_seqs_rerun.log"
+mv -f hap.fa "${PURGE_DIR}/assembly.hap.fasta"
+mv -f purged.fa "${PURGE_DIR}/assembly.purged.fasta"
+
+if [[ "${SKIP_HIST:-0}" != "1" ]] && command -v hist_plot.py >/dev/null 2>&1; then
+  log "Running hist_plot.py"
+  hist_plot.py -c "${CUTOFFS_FILE}" \
+    "${PURGE_DIR}/pbcstat.stat" \
+    "${PURGE_DIR}/plot_hist.png" \
+    2> "${ASSEMBLY_ROOT}/logs/purge_dups/plot_hist_rerun.log" || log "WARN: hist_plot.py failed (see plot_hist_rerun.log); outputs are still updated."
+else
+  log "Skipping histogram (hist_plot.py missing or SKIP_HIST=1)."
+fi
+
+log "Done. Updated: ${PURGE_DIR}/purge_dups.bed, assembly.hap.fasta, assembly.purged.fasta"

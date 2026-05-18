@@ -1,0 +1,49 @@
+# HPC / workflow noise
+.snakemake/
+.nextflow/
+logs/
+*.o*
+*.e*
+assembly_*.*
+
+# Large data (keep paths in yaml; store reads/assemblies elsewhere)
+raw_data/
+pacbio/
+hi-c/
+*.bam
+*.cram
+*.fastq
+*.fastq.gz
+*.fq
+*.fq.gz
+
+# Large assembly outputs (track cutoffs/bed/summaries via exceptions below)
+**/results/**/*.fasta
+**/results/**/*.fa
+**/results/**/*.paf
+**/results/**/*.bam
+**/results/**/*.bai
+**/results/**/*.cov
+**/results/purge_dups/assembly.purged.fasta.*
+**/results/scaffolding/
+**/results/_restage_backup_*/
+
+# BUSCO working trees (keep busco_summary.txt)
+**/results/qc/busco/**/run_*/
+**/results/qc/busco/**/tmp/
+busco_*.log
+busco_downloads/
+
+# Logs at project root
+*.log
+
+# Keep small reproducibility artifacts
+!**/results/purge_dups/cutoffs
+!**/results/purge_dups/purge_dups.bed
+!**/results/purge_dups/pbcstat.stat
+!**/results/purge_dups/plot_hist.png
+!**/results/purge_dups/hist.png
+!**/results/qc/busco/**/busco_summary.txt
+!**/results/qc/merqury/**/*.qv
+!**/results/qc/merqury/**/*.completeness.stats
+!**/results/scaffolding/mapped_libraryQC.txt

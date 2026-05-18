@@ -1,0 +1,12 @@
+#!/bin/bash
+
+#PBS -N durio_download_job
+#PBS -l select=1:ncpus=4:mem=16gb
+#PBS -l walltime=12:00:00
+#PBS -j oe
+#PBS -o durio_download_output.log
+#PBS -V
+
+cd $PBS_O_WORKDIR
+
+rclone copy --include "*.bam" gdrive:bd-med/durio/ pacbio/

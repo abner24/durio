@@ -1,0 +1,106 @@
+ASMSTATS:
+  asmstats: 1.0.0
+  seqtk: 1.5-r133
+BEDTOOLS_BAMTOBEDSORT:
+  samtools: 1.22.1
+  bedtools: 2.31.1
+BGZIP_ASSEMBLIES:
+  tabix: 1.21
+BGZIP_HAPLOTIGS:
+  tabix: 1.21
+BUSCO_BUSCO:
+  busco: 6.0.0
+BWAMEM2_INDEX:
+  bwamem2: 2.2.1
+CONCATENATE_ASSEMBLIES:
+  pigz: 2.3.4
+CONCATENATE_HAPLOTYPES:
+  pigz: 2.3.4
+CONCATENATE_INPUT_READS:
+  pigz: 2.3.4
+COOLER_CLOAD:
+  cooler: 0.10.4
+COOLER_ZOOMIFY:
+  cooler: 0.10.4
+CRAMALIGN_BWAMEM2ALIGNHIC:
+  samtools: 1.22.1
+  bwamem2: 2.2.1
+CRAMALIGN_GENCRAMCHUNKS:
+  cramalign_gencramchunks: 1.1.0
+FASTK_FASTK:
+  fastk: 1.1
+FASTK_HISTEX:
+  fastk: 1.1
+FASTXALIGN_MINIMAP2ALIGN:
+  slice_fasta.py: 1.0.0
+  samtools: 1.22.1
+  minimap2: 2.30-r1287
+FASTXALIGN_PYFASTXINDEX:
+  slice_fasta.py: 1.0.0
+GAWK_PROCESS_PAIRS_FILE:
+  gawk: 5.3.0
+GENOMESCOPE2:
+  genomescope2: 2.0
+GFASTATS:
+  gfastats: 1.3.10
+HIFIASM:
+  hifiasm: 0.25.0-r726
+  samtools: 1.22.1
+HIFIASM_BIN:
+  hifiasm: 0.25.0-r726
+  samtools: 1.22.1
+JUICERTOOLS_PRE:
+  juicer_tools: 2.20.00
+MERQURYFK_MERQURYFK:
+  fastk: 1.1.0
+  merquryfk: 1.1.1
+  r: 4.2.3
+MINIMAP2_ALIGN_ASSEMBLY:
+  minimap2: 2.29-r1283
+  samtools: 1.21
+MINIMAP2_INDEX:
+  minimap2: 2.29-r1283
+OATK:
+  oatk: 1.0
+PRETEXTMAP:
+  pretextmap: 0.1.9
+  samtools: 1.17
+PRETEXTSNAPSHOT:
+  pretextsnapshot: 0.0.4
+PURGEDUPS_CALCUTS:
+  purgedups: 1.2.6
+PURGEDUPS_GETSEQS:
+  purgedups: 1.2.6
+PURGEDUPS_HISTPLOT:
+  purgedups: 1.2.6
+PURGEDUPS_PBCSTAT:
+  purgedups: 1.2.6
+PURGEDUPS_PURGEDUPS:
+  purgedups: 1.2.6
+PURGEDUPS_SPLITFA:
+  purgedups: 1.2.6
+SAMTOOLS_FAIDX:
+  samtools: 1.22.1
+SAMTOOLS_FAIDX_CONTIGS:
+  samtools: 1.22.1
+SAMTOOLS_FAIDX_SCAFFOLDS:
+  samtools: 1.22.1
+SAMTOOLS_FLAGSTAT:
+  samtools: 1.22.1
+SAMTOOLS_IDXSTATS:
+  samtools: 1.22.1
+SAMTOOLS_MERGEDUP:
+  samtools: 1.22.1
+SAMTOOLS_SPLITHEADER:
+  samtools: 1.22.1
+SAMTOOLS_STATS:
+  samtools: 1.22.1
+Workflow:
+    sanger-tol/genomeassembly: v0.10.1dev-g58a54e9
+    Nextflow: 25.10.2
+YAHS:
+  yahs: 1.2.2
+YAHS_MAKEPAIRSFILE:
+  juicer_pre: null
+  gawk: 5.3.1
+  sort: 9.5

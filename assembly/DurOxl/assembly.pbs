@@ -1,0 +1,12 @@
+#!/bin/bash
+#PBS -N assembly_DurOxl
+#PBS -l select=1:ncpus=2:mem=8gb
+#PBS -l walltime=48:00:00
+#PBS -j oe
+#PBS -V
+
+cd $PBS_O_WORKDIR
+
+snakemake -s /home/proj_202504p2_BD-MED/abner/GenomeAssembly/Snakefile \
+    --profile /home/proj_202504p2_BD-MED/abner/GenomeAssembly/config \
+    --use-conda --jobs 20
