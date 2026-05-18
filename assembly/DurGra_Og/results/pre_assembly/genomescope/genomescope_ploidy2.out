@@ -1,0 +1,3 @@
+GenomeScope analyzing results/pre_assembly/reads.histo p=2 k=31 outdir=results/pre_assembly/genomescope/output_ploidy2
+aa:98.6% ab:1.36%
+Model converged het:0.0136 kcov:15.9 err:0.00274 model fit:0.341 len:756235937

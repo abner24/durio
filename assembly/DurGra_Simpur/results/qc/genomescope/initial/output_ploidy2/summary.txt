@@ -1,0 +1,14 @@
+GenomeScope version 2.0
+input file = results/qc/kmers/initial.histo
+output directory = results/qc/genomescope/initial/output_ploidy2
+p = 2
+k = 31
+
+property                      min               max               
+Homozygous (aa)               96.6082%          97.4327%          
+Heterozygous (ab)             2.56728%          3.39177%          
+Genome Haploid Length         2,136,192 bp      2,281,057 bp      
+Genome Repeat Length          1,816,500 bp      1,939,684 bp      
+Genome Unique Length          319,692 bp        341,372 bp        
+Model Fit                     42.1943%          86.4341%          
+Read Error Rate               5.37274%          5.37274%          

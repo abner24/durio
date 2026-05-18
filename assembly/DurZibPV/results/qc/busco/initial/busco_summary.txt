@@ -1,0 +1,30 @@
+# BUSCO version is: 6.0.0 
+# The lineage dataset is: embryophyta_odb10 (Creation date: 2024-01-08, number of genomes: 50, number of BUSCOs: 1614)
+# Summarized benchmarking in BUSCO notation for file /home/proj_202504p2_BD-MED/abner/durio/assembly/DurZibPV/results/assembly/asm.bp.hic.p_ctg.fa
+# BUSCO was run in mode: euk_genome_min
+# Gene predictor used: miniprot
+
+	***** Results: *****
+
+	C:99.1%[S:74.3%,D:24.7%],F:0.1%,M:0.8%,n:1614,E:6.5%	   
+	1599	Complete BUSCOs (C)	(of which 104 contain internal stop codons)		   
+	1200	Complete and single-copy BUSCOs (S)	   
+	399	Complete and duplicated BUSCOs (D)	   
+	2	Fragmented BUSCOs (F)			   
+	13	Missing BUSCOs (M)			   
+	1614	Total BUSCO groups searched		   
+
+Assembly Statistics:
+	732	Number of scaffolds
+	732	Number of contigs
+	836037230	Total length
+	0.000%	Percent gaps
+	25 Mbp	Scaffold N50
+	25 Mbp	Contigs N50
+
+
+Dependencies and versions:
+	hmmsearch: 3.4
+	bbtools: None
+	miniprot_index: 0.18-r281
+	miniprot_align: 0.18-r281

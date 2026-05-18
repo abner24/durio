@@ -1,0 +1,13 @@
+GenomeScope version 2.0
+input file = results/qc/kmers/purged.histo
+output directory = results/qc/genomescope/purged/output_ploidy1
+p = 1
+k = 31
+
+property                      min               max               
+Homozygous (a)                100%              100%              
+Genome Haploid Length         312,163 bp        Inf bp            
+Genome Repeat Length          211,725 bp        Inf bp            
+Genome Unique Length          100,438 bp        Inf bp            
+Model Fit                     9.44632%          0.284309%         
+Read Error Rate               3.58425%          3.58425%          

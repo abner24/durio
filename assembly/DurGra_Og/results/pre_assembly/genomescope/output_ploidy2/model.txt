@@ -1,0 +1,19 @@
+
+Formula: y_transform ~ x^transform_exp * length * predict2_0(r1, k, d, 
+    kmercov, bias, x)
+
+Parameters:
+         Estimate Std. Error t value Pr(>|t|)    
+d       5.889e-02  1.463e-03   40.24   <2e-16 ***
+r1      1.355e-02  1.844e-04   73.50   <2e-16 ***
+kmercov 1.590e+01  1.490e-02 1067.09   <2e-16 ***
+bias    3.415e-01  1.181e-02   28.91   <2e-16 ***
+length  5.436e+08  2.026e+06  268.27   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 5177000 on 974 degrees of freedom
+
+Number of iterations to convergence: 5 
+Achieved convergence tolerance: 1.49e-08
+

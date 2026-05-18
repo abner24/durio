@@ -1,0 +1,13 @@
+GenomeScope version 2.0
+input file = results/pre_assembly/reads.histo
+output directory = results/pre_assembly/genomescope/output_ploidy1
+p = 1
+k = 31
+
+property                      min               max               
+Homozygous (a)                100%              100%              
+Genome Haploid Length         757,072,873 bp    774,962,615 bp    
+Genome Repeat Length          179,539,795 bp    183,782,347 bp    
+Genome Unique Length          577,533,078 bp    591,180,268 bp    
+Model Fit                     61.2608%          73.1888%          
+Read Error Rate               0.580654%         0.580654%         

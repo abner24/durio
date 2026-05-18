@@ -1,0 +1,19 @@
+
+Formula: y_transform ~ x^transform_exp * length * predict1_0(k, d, kmercov, 
+    bias, x)
+
+Parameters:
+         Estimate Std. Error t value Pr(>|t|)    
+d       0.000e+00  2.039e+01   0.000 1.000000    
+kmercov 6.447e+00  2.509e+02   0.026 0.979506    
+bias    7.093e+01  2.119e+01   3.347 0.000847 ***
+length  1.491e+07  2.778e+08   0.054 0.957211    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 52640 on 966 degrees of freedom
+
+Number of iterations till stop: 99 
+Achieved convergence tolerance: 1.49e-08
+Reason stopped: Number of calls to `fcn' has reached or exceeded `maxfev' == 500.
+

@@ -1,0 +1,3 @@
+GenomeScope analyzing results/qc/kmers/initial.histo p=1 k=31 outdir=results/qc/genomescope/initial/output_ploidy1
+a:100%
+Model converged het:0 kcov:10.5 err:0.0382 model fit:48.5 len:23593036

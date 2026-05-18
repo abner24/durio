@@ -34,16 +34,46 @@ hi-c/
 busco_*.log
 busco_downloads/
 
+# FastK databases (large; regenerate from reads)
+**/*.ktab
+**/reads.kmer.db.*
+**/*.kmer.db.hist
+**/results/qc/kmers/fastk_tmp_*/
+
 # Logs at project root
 *.log
 
-# Keep small reproducibility artifacts
+# ── Track: purge decisions ──
 !**/results/purge_dups/cutoffs
 !**/results/purge_dups/purge_dups.bed
 !**/results/purge_dups/pbcstat.stat
 !**/results/purge_dups/plot_hist.png
 !**/results/purge_dups/hist.png
+
+# ── Track: pre-assembly QC summaries ──
+!**/results/pre_assembly/genomescope/*.out
+!**/results/pre_assembly/genomescope/**/summary.txt
+!**/results/pre_assembly/genomescope/**/model.txt
+!**/results/pre_assembly/genomescope/**/*.png
+!**/results/pre_assembly/smudgeplot/*.png
+!**/results/pre_assembly/smudgeplot/*.txt
+!**/results/pre_assembly/smudgeplot/*.pdf
+!**/results/pre_assembly/reads.histo
+
+# ── Track: assembly QC summaries ──
 !**/results/qc/busco/**/busco_summary.txt
 !**/results/qc/merqury/**/*.qv
 !**/results/qc/merqury/**/*.completeness.stats
+!**/results/qc/merqury/**/*.png
+!**/results/qc/genomescope/**/*.out
+!**/results/qc/genomescope/**/summary.txt
+!**/results/qc/genomescope/**/model.txt
+!**/results/qc/genomescope/**/*.png
+!**/results/qc/smudgeplot/*.png
+!**/results/qc/smudgeplot/*.txt
+!**/results/qc/smudgeplot/*.pdf
+!**/results/qc/tidk/**/*.svg
+# tidk window TSVs are large; plots + busco/merqury summaries are enough
+**/results/qc/tidk/**/*_telomeric_repeat_windows.tsv
+!**/results/qc/kmers/*.histo
 !**/results/scaffolding/mapped_libraryQC.txt

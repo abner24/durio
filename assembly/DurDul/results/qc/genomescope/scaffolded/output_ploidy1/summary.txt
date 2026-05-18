@@ -1,0 +1,13 @@
+GenomeScope version 2.0
+input file = results/qc/kmers/scaffolded.histo
+output directory = results/qc/genomescope/scaffolded/output_ploidy1
+p = 1
+k = 31
+
+property                      min               max               
+Homozygous (a)                100%              100%              
+Genome Haploid Length         461,819 bp        Inf bp            
+Genome Repeat Length          335,983 bp        Inf bp            
+Genome Unique Length          125,836 bp        Inf bp            
+Model Fit                     6.17622%          0.277976%         
+Read Error Rate               4.36068%          4.36068%          
