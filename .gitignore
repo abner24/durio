@@ -77,3 +77,12 @@ busco_downloads/
 **/results/qc/tidk/**/*_telomeric_repeat_windows.tsv
 !**/results/qc/kmers/*.histo
 !**/results/scaffolding/mapped_libraryQC.txt
+
+# ── Track: organelles (final assemblies + annotations; not full OATK graphs) ──
+**/results/organelles/oatk.utg*.gfa
+!**/results/organelles/oatk.pltd.ctg.fasta
+!**/results/organelles/oatk.mito.ctg.fasta
+!**/results/organelles/oatk.pltd.gfa
+!**/results/organelles/oatk.mito.gfa
+!**/results/organelles/oatk.*.bed
+!**/results/organelles/oatk.annot_*.txt
