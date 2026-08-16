@@ -43,6 +43,15 @@ busco_downloads/
 # Logs at project root
 *.log
 
+# Comparative-genomics run products (scripts + README are tracked)
+comparison/logs/
+comparison/12_mcmctree/
+comparison/13_public_assemblies/
+comparison/15_jcvi/input/
+comparison/15_jcvi/out/
+**/__pycache__/
+*.pyc
+
 # ── Track: purge decisions ──
 !**/results/purge_dups/cutoffs
 !**/results/purge_dups/purge_dups.bed

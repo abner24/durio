@@ -1,0 +1,60 @@
+#!/bin/bash
+#PBS -N durio_mcmcH
+#PBS -l select=1:ncpus=8:mem=32gb
+#PBS -l walltime=72:00:00
+#PBS -j oe
+#PBS -o /home/proj_202504p2_BD-MED/abner/durio/comparison/logs/durio_mcmcH.o
+
+# MCMCtree with Herrania umbratica sister to cacao.
+set -euo pipefail
+
+ROOT="${DURIO_ROOT:-/home/proj_202504p2_BD-MED/abner/durio}"
+CMP="${CMP:-${ROOT}/comparison}"
+ENV="${DURIO_ENV:-/home/chroma.phytos.nmslms/miniforge3/envs/durio_evol}"
+export PATH="${ENV}/bin:/opt/pbs/bin:/usr/bin:/bin"
+unset PYTHONPATH PYTHONHOME CONDA_PREFIX CONDA_DEFAULT_ENV CONDA_SHLVL || true
+export LC_ALL=C
+export DURIO_ROOT="${ROOT}"
+export CMP
+export DURIO_ENV="${ENV}"
+
+mkdir -p "${CMP}/logs" "${CMP}/12_mcmctree/herrania/posterior"
+cd "${CMP}"
+
+echo "[INFO] host=$(hostname) date=$(date -Is)"
+echo "[INFO] preparing Herrania alignment"
+"${ENV}/bin/python" "${CMP}/scripts/12_prepare_mcmctree_herrania.py"
+
+POST="${CMP}/12_mcmctree/herrania/posterior"
+PRIOR="${CMP}/12_mcmctree/herrania/prior"
+cd "${POST}"
+
+echo "[INFO] Hessian usedata=3"
+mcmctree mcmctree.ctl > mcmctree.hessian.log 2>&1
+cp -f out.BV in.BV
+"${ENV}/bin/python" - <<'PY'
+from pathlib import Path
+p = Path("mcmctree.ctl")
+lines = []
+for line in p.read_text().splitlines():
+    if line.startswith("usedata"):
+        lines.append("usedata = 2 in.BV")
+    elif line.startswith("finetune"):
+        continue
+    else:
+        lines.append(line)
+p.write_text("\n".join(lines) + "\n")
+PY
+
+echo "[INFO] posterior MCMC usedata=2"
+mcmctree mcmctree.ctl > mcmctree.mcmc.log 2>&1
+
+if [[ ! -s "${PRIOR}/mcmc.txt" ]]; then
+  echo "[INFO] prior usedata=0"
+  cd "${PRIOR}"
+  mcmctree mcmctree.ctl > mcmctree.prior.log 2>&1 || echo "[WARN] prior failed"
+fi
+
+"${ENV}/bin/python" "${CMP}/scripts/12_parse_mcmctree_herrania.py"
+echo "[DONE] $(date -Is)"
+ls -lh "${POST}/mcmc.txt" "${POST}/FigTree.tre" 2>/dev/null || ls -lh "${POST}"
