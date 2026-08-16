@@ -1,0 +1,50 @@
+#!/bin/bash
+#PBS -N durio_jcvi
+#PBS -l select=1:ncpus=8:mem=64gb
+#PBS -l walltime=24:00:00
+#PBS -j oe
+#PBS -o /home/proj_202504p2_BD-MED/abner/durio/comparison/logs/durio_jcvi.o
+
+# JCVI / synteny figures: zibethinus karyotype + dual/dotplots (DurSin, DurTes, DurOxl, hybrids).
+set -euo pipefail
+
+ROOT="${DURIO_ROOT:-/home/proj_202504p2_BD-MED/abner/durio}"
+CMP="${CMP:-${ROOT}/comparison}"
+ENV="${DURIO_ENV:-/home/chroma.phytos.nmslms/miniforge3/envs/durio_evol}"
+export PATH="${ENV}/bin:/opt/pbs/bin:/usr/bin:/bin"
+unset PYTHONPATH PYTHONHOME CONDA_PREFIX CONDA_DEFAULT_ENV CONDA_SHLVL || true
+export LC_ALL=C
+export MPLBACKEND=Agg
+export DURIO_ROOT="${ROOT}"
+export CMP
+export DURIO_ENV="${ENV}"
+
+mkdir -p "${CMP}/logs" "${CMP}/15_jcvi/input" "${CMP}/15_jcvi/out"
+cd "${CMP}"
+
+echo "[INFO] host=$(hostname) date=$(date -Is)"
+"${ENV}/bin/python" - <<'PY'
+import importlib, subprocess, sys
+need = []
+for m in ("matplotlib", "numpy"):
+    try:
+        importlib.import_module(m)
+    except Exception:
+        need.append(m)
+if need:
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "--quiet", *need])
+try:
+    import jcvi  # noqa: F401
+except Exception:
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "--quiet", "jcvi"])
+print("python ok", sys.executable)
+PY
+
+echo "[INFO] preparing BED + peptides"
+"${ENV}/bin/python" "${CMP}/scripts/15_prepare_jcvi.py"
+
+echo "[INFO] diamond + plots"
+"${ENV}/bin/python" "${CMP}/scripts/15_plot_synteny.py"
+
+echo "[DONE] $(date -Is)"
+ls -lh "${CMP}/15_jcvi/out" | head -40
